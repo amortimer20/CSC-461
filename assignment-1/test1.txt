@@ -1,0 +1,3 @@
+sum = 10 + 25;
+result = (sum - 5) * 2;
+average = result / 3;

@@ -1,0 +1,9 @@
+2sum = 10;
+25value = 30;
+4_score = 50;
+123abc456 = 70;
+
+goodValue2 = 80;
+
+bad1 = 10 @ 5;
+bad2 = 20 # 4;

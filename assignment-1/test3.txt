@@ -1,0 +1,20 @@
+// This entire line should be ignored
+
+sum = 10 + 20; // comment after statement
+
+/* This block comment should be ignored */
+
+total = sum * 2;
+
+/*
+   This is a multi-line comment.
+
+   Everything inside this comment
+   should be ignored by the lexer.
+
+   x = 999;
+   2wrong = 100;
+   @@@
+*/
+
+answer = total / 4;

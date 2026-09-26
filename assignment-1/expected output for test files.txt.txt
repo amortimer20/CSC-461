@@ -1,0 +1,84 @@
+expected output for test1.txt 
+
+Token: IDENT                Lexeme: sum
+Token: ASSIGN_OP            Lexeme: =
+Token: INT_LIT              Lexeme: 10
+Token: ADD_OP               Lexeme: +
+Token: INT_LIT              Lexeme: 25
+Token: SEMICOLON            Lexeme: ;
+Token: IDENT                Lexeme: result
+Token: ASSIGN_OP            Lexeme: =
+Token: LEFT_PAREN           Lexeme: (
+Token: IDENT                Lexeme: sum
+Token: SUB_OP               Lexeme: -
+Token: INT_LIT              Lexeme: 5
+Token: RIGHT_PAREN          Lexeme: )
+Token: MULT_OP              Lexeme: *
+Token: INT_LIT              Lexeme: 2
+Token: SEMICOLON            Lexeme: ;
+Token: IDENT                Lexeme: average
+Token: ASSIGN_OP            Lexeme: =
+Token: IDENT                Lexeme: result
+Token: DIV_OP               Lexeme: /
+Token: INT_LIT              Lexeme: 3
+Token: SEMICOLON            Lexeme: ;
+Token: EOF                  Lexeme: EOF
+
+
+
+
+
+expected output for test2.txt 
+Token: SEMICOLON            Lexeme: ;
+Token: INVALID_IDENTIFIER   Lexeme: 123abc456
+Token: ASSIGN_OP            Lexeme: =
+Token: INT_LIT              Lexeme: 70
+Token: SEMICOLON            Lexeme: ;
+Token: IDENT                Lexeme: goodValue2
+Token: ASSIGN_OP            Lexeme: =
+Token: INT_LIT              Lexeme: 80
+Token: SEMICOLON            Lexeme: ;
+Token: IDENT                Lexeme: bad1
+Token: ASSIGN_OP            Lexeme: =
+Token: INT_LIT              Lexeme: 10
+Token: INVALID_TOKEN        Lexeme: @
+Token: INT_LIT              Lexeme: 5
+Token: SEMICOLON            Lexeme: ;
+Token: IDENT                Lexeme: bad2
+Token: ASSIGN_OP            Lexeme: =
+Token: INT_LIT              Lexeme: 20
+Token: INVALID_TOKEN        Lexeme: #
+Token: INT_LIT              Lexeme: 4
+Token: SEMICOLON            Lexeme: ;
+Token: EOF                  Lexeme: EOF
+
+
+
+
+
+
+
+expected output for test3.txt 
+Token: IDENT                Lexeme: sum
+Token: ASSIGN_OP            Lexeme: =
+Token: INT_LIT              Lexeme: 10
+Token: ADD_OP               Lexeme: +
+Token: INT_LIT              Lexeme: 20
+Token: SEMICOLON            Lexeme: ;
+Token: IDENT                Lexeme: total
+Token: ASSIGN_OP            Lexeme: =
+Token: IDENT                Lexeme: sum
+Token: MULT_OP              Lexeme: *
+Token: INT_LIT              Lexeme: 2
+Token: SEMICOLON            Lexeme: ;
+Token: IDENT                Lexeme: answer
+Token: ASSIGN_OP            Lexeme: =
+Token: IDENT                Lexeme: total
+Token: DIV_OP               Lexeme: /
+Token: INT_LIT              Lexeme: 4
+Token: SEMICOLON            Lexeme: ;
+Token: EOF                  Lexeme: EOF
+
+
+
+
