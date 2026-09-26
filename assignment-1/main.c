@@ -70,7 +70,9 @@ FILE *inputFile;               // Input file
 */
 void addChar(void)
 {
-    
+    lexeme[lexLen] = nextChar;
+    lexLen++;
+    lexeme[lexLen] = '\0';
 }
 
 
@@ -99,7 +101,20 @@ void addChar(void)
        be able to return EOF. After checking for
        EOF, the character can be stored in nextChar.
 */
-void getChar(void);
+void getChar(void)
+{
+    int charCode = getc(inputFile);
+    nextChar = (char)charCode;
+
+    if (charCode == EOF)
+        charClass = END_OF_INPUT;
+    else if (isalpha(charCode) || charCode == '_')
+        charClass = LETTER;
+    else if (isdigit(charCode))
+        charClass = DIGIT;
+    else
+        charClass = UNKNOWN;
+}
 
 
 /*
@@ -134,7 +149,62 @@ void getChar(void);
        If a block comment is not closed before EOF,
        report an error.
 */
-void skipWhitespaceAndComments(void);
+void skipWhitespaceAndComments(void)
+{
+    while (1)
+    {
+        if (nextChar == ' ' || nextChar == '\t' || nextChar == '\n' || nextChar == '\r')
+        {
+            getChar();
+        }
+        else if (nextChar == '/')
+        {
+            getChar();
+
+            if (nextChar == '/') // Single-line comment
+            {
+                while (nextChar != '\n')
+                    getChar();
+            }
+            else if (nextChar == '*') // Multi-line comment
+            {
+                while (1)
+                {
+                    getChar();
+
+                    if (charClass == END_OF_INPUT)
+                    {
+                        printf("Error: unclosed multi-line comment\n");
+                        break;
+                    }
+
+                    if (nextChar == '*')
+                    {
+                        getChar();
+
+                        if (nextChar == '/')
+                        {
+                            getChar();
+                            break;
+                        }
+                    }
+                }
+            }
+            else // Division operator
+            {
+                // Replace division operator as current character
+                ungetc(nextChar, inputFile);
+                nextChar = '/';
+                charClass = UNKNOWN;
+                break;
+            }
+        }
+        else // Other symbol
+        {
+            break;
+        }
+    }
+}
 
 
 /*
@@ -165,7 +235,20 @@ void skipWhitespaceAndComments(void);
        2sum       -> invalid
        4_score    -> invalid
 */
-int isValidIdentifier(const char *name);
+int isValidIdentifier(const char *name)
+{
+    if (!(isalpha(name[0]) || name[0] == '_'))
+        return 0;
+    
+
+    for (int i = 1; name[i] != '\0'; i++)
+    {
+        if (!(isalpha(name[i]) || isdigit(name[i]) || name[i] == '_'))
+            return 0;
+    }
+    
+    return 1;
+}
 
 
 /*
@@ -195,7 +278,55 @@ int isValidIdentifier(const char *name);
        Any unsupported symbol should be classified
        as INVALID_TOKEN.
 */
-enum TokenType lookup(char ch);
+enum TokenType lookup(char ch)
+{
+    switch(ch)
+    {
+        case '(':
+            return LEFT_PAREN;
+        case ')':
+            return RIGHT_PAREN;
+        case '+':
+            return ADD_OP;
+        case '-':
+            return SUB_OP;
+        case '*':
+            return MULT_OP;
+        case '/':
+            return DIV_OP;
+        case '=':
+            return ASSIGN_OP;
+        case ';':
+            return SEMICOLON;
+        default:
+            return INVALID_TOKEN;
+    }
+}
+
+
+/*
+   tokenName()
+
+   Purpose:
+       Converts a TokenType into readable text
+       for displaying the output.
+
+   Input:
+       token - a TokenType value
+
+   Returns:
+       String containing the token name
+
+   Example:
+       IDENT      -> "IDENT"
+       INT_LIT    -> "INT_LIT"
+       ADD_OP     -> "ADD_OP"
+
+   Note:
+       This function is only used to make the
+       lexer output easier to read.
+*/
+const char *tokenName(enum TokenType token);
 
 
 /*
@@ -230,32 +361,46 @@ enum TokenType lookup(char ch);
              INT_LIT 2
              IDENT sum
 */
-enum TokenType lex(void);
+enum TokenType lex(void)
+{
+    skipWhitespaceAndComments();
+    lexLen = 0; // Reset lexeme length before building
 
+    if (charClass == LETTER)
+    {
+        while (charClass == LETTER || charClass == DIGIT)
+        {
+            addChar();
+            getChar();
+        }
 
-/*
-   tokenName()
+        nextToken = isValidIdentifier(lexeme) ? IDENT : INVALID_IDENTIFIER;
+    }
+    else if (charClass == DIGIT)
+    {
+        while (charClass == DIGIT)
+        {
+            addChar();
+            getChar();
+        }
 
-   Purpose:
-       Converts a TokenType into readable text
-       for displaying the output.
+        nextToken = INT_LIT;
+    }
+    else if (charClass == UNKNOWN)
+    {
+        addChar();
+        nextToken = lookup(nextChar);
+        getChar();
+    }
+    else // END_OF_INPUT
+    {
+        strcpy(lexeme, "EOF");
+        nextToken = END_TOKEN;
+    }
 
-   Input:
-       token - a TokenType value
-
-   Returns:
-       String containing the token name
-
-   Example:
-       IDENT      -> "IDENT"
-       INT_LIT    -> "INT_LIT"
-       ADD_OP     -> "ADD_OP"
-
-   Note:
-       This function is only used to make the
-       lexer output easier to read.
-*/
-const char *tokenName(enum TokenType token);
+    printf("Token: %-10s\tLexeme: %s\n", tokenName(nextToken), lexeme);
+    return nextToken;
+}
 
 
 /* =========================================
@@ -264,7 +409,7 @@ const char *tokenName(enum TokenType token);
 
 int main(void)
 {
-    inputFile = fopen("test.txt", "r");
+    inputFile = fopen("test1.txt", "r");
 
     if (inputFile == NULL) {
         printf("Error: could not open the input file.\n");
