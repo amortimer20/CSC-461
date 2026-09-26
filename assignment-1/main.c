@@ -305,31 +305,6 @@ enum TokenType lookup(char ch)
 
 
 /*
-   tokenName()
-
-   Purpose:
-       Converts a TokenType into readable text
-       for displaying the output.
-
-   Input:
-       token - a TokenType value
-
-   Returns:
-       String containing the token name
-
-   Example:
-       IDENT      -> "IDENT"
-       INT_LIT    -> "INT_LIT"
-       ADD_OP     -> "ADD_OP"
-
-   Note:
-       This function is only used to make the
-       lexer output easier to read.
-*/
-const char *tokenName(enum TokenType token);
-
-
-/*
    lex()
 
    Purpose:
@@ -398,10 +373,34 @@ enum TokenType lex(void)
         nextToken = END_TOKEN;
     }
 
-    printf("Token: %-10s\tLexeme: %s\n", tokenName(nextToken), lexeme);
+    // printf("Token: %-10s\tLexeme: %s\n", tokenName(nextToken), lexeme);
     return nextToken;
 }
 
+
+/*
+   tokenName()
+
+   Purpose:
+       Converts a TokenType into readable text
+       for displaying the output.
+
+   Input:
+       token - a TokenType value
+
+   Returns:
+       String containing the token name
+
+   Example:
+       IDENT      -> "IDENT"
+       INT_LIT    -> "INT_LIT"
+       ADD_OP     -> "ADD_OP"
+
+   Note:
+       This function is only used to make the
+       lexer output easier to read.
+*/
+const char *tokenName(enum TokenType token);
 
 /* =========================================
    MAIN PROGRAM
@@ -422,6 +421,7 @@ int main(void)
     // Continue calling lex() until EOF
     do {
         lex();
+        printf("Token: %-10s\tLexeme: %s\n", tokenName(nextToken), lexeme);
     }
     while (nextToken != END_TOKEN);
 
