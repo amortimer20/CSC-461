@@ -68,7 +68,10 @@ FILE *inputFile;               // Input file
    Important:
        Keep lexeme properly terminated with '\0'.
 */
-void addChar(void);
+void addChar(void)
+{
+    
+}
 
 
 /*
